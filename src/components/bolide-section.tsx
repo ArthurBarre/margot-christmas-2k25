@@ -38,7 +38,7 @@ function BolideScratchCard({ onRevealed }: { onRevealed: () => void }) {
     ctx.font = "bold 20px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("🚗 GRATTE POUR DÉCOUVRIR ! 🚗", canvas.width / 2, canvas.height / 2);
+    ctx.fillText("🚗 GRATTE ! 🚗", canvas.width / 2, canvas.height / 2);
 
     // Add some sparkle effects
     for (let i = 0; i < 30; i++) {
@@ -145,7 +145,7 @@ function BolideScratchCard({ onRevealed }: { onRevealed: () => void }) {
 
   return (
     <motion.div
-      className="relative w-full max-w-md mx-auto rounded-2xl overflow-hidden shadow-2xl"
+      className="relative w-80 md:w-96 mx-auto rounded-2xl overflow-hidden shadow-2xl"
       initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
       animate={{ opacity: 1, scale: 1, rotateY: 0 }}
       transition={{
@@ -171,7 +171,7 @@ function BolideScratchCard({ onRevealed }: { onRevealed: () => void }) {
             transition={{ delay: 0.3 }}
           >
             <motion.p
-              className="text-2xl font-bold text-white drop-shadow-lg text-center"
+              className="text-xl font-bold text-white drop-shadow-lg text-center"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5 }}
@@ -185,9 +185,9 @@ function BolideScratchCard({ onRevealed }: { onRevealed: () => void }) {
       {/* Scratch canvas */}
       <canvas
         ref={canvasRef}
-        width={400}
-        height={300}
-        className={`relative z-10 w-full h-64 cursor-pointer touch-none ${isRevealed ? "pointer-events-none" : ""}`}
+        width={384}
+        height={220}
+        className={`relative z-10 w-full h-52 cursor-pointer touch-none ${isRevealed ? "pointer-events-none" : ""}`}
         onMouseDown={handleStart}
         onMouseMove={handleMove}
         onMouseUp={handleEnd}
@@ -205,7 +205,7 @@ function BolideScratchCard({ onRevealed }: { onRevealed: () => void }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          {Math.round(scratchPercent)}% gratté
+          {Math.round(scratchPercent*2)}% gratté
         </motion.div>
       )}
     </motion.div>
@@ -217,7 +217,7 @@ export function BolideSection({ onNext }: BolideSectionProps) {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center w-full max-w-4xl px-4"
+      className="flex flex-col items-center justify-center w-full h-full max-w-4xl px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{
@@ -234,12 +234,12 @@ export function BolideSection({ onNext }: BolideSectionProps) {
         transition={{ delay: 0.3 }}
       >
         <motion.h2
-          className="text-2xl md:text-3xl font-bold text-white mb-6 drop-shadow-lg text-center"
+          className="text-xl md:text-2xl font-bold text-white mb-6 drop-shadow-lg text-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          Découvre notre bolide !
+          🚗 Découvre notre bolide !
         </motion.h2>
 
         <BolideScratchCard onRevealed={() => setIsRevealed(true)} />

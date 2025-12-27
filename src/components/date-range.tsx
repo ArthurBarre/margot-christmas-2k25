@@ -10,11 +10,13 @@ interface DateRangeSectionProps {
 }
 
 export function DateRangeSection({ onNext, dateRange, onDateRangeChange }: DateRangeSectionProps) {
-  const hasSelectedRange = dateRange?.from && dateRange?.to;
+  // Show button only when both dates are selected (complete range)
+  const hasSelectedRange = dateRange?.from && dateRange?.to && 
+    dateRange.from.getTime() !== dateRange.to.getTime();
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center w-full max-w-4xl px-4"
+      className="flex flex-col items-center justify-center w-full h-full max-w-4xl px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{
@@ -31,7 +33,7 @@ export function DateRangeSection({ onNext, dateRange, onDateRangeChange }: DateR
         transition={{ delay: 0.4 }}
       >
         <motion.h2
-          className="text-2xl md:text-3xl font-bold text-white text-center mb-4 drop-shadow-lg"
+          className="text-xl md:text-2xl font-bold text-white text-center mb-6 drop-shadow-lg"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -41,7 +43,7 @@ export function DateRangeSection({ onNext, dateRange, onDateRangeChange }: DateR
 
         {/* Calendar */}
         <motion.div
-          className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 shadow-2xl"
+          className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-2xl"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.7, type: "spring", stiffness: 100 }}
@@ -58,7 +60,7 @@ export function DateRangeSection({ onNext, dateRange, onDateRangeChange }: DateR
         {/* Play button appears after selecting dates */}
         {hasSelectedRange && (
           <motion.div
-            className="mt-8"
+            className="my-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}

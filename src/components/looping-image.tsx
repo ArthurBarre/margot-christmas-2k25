@@ -24,7 +24,7 @@ export function LoopingImages({ onNext, isTransitioning = false }: LoopingImages
 
   return (
     <motion.div
-      className="relative w-[500px] h-[500px]"
+      className="relative w-[380px] h-[380px] md:w-[500px] md:h-[500px]"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{
@@ -79,13 +79,13 @@ function SquareWithOffset({
   const x = useTransform(firstSquareOffset, (offset: number) => {
     const firstAngle = ((getPathOffset(index) + offset) % 1) * Math.PI * 2;
     const lastAngle = ((getPathOffset(parentIndex) + offset) % 1) * Math.PI * 2;
-    return Math.cos(firstAngle) * 180 - Math.cos(lastAngle) * 180;
+    return Math.cos(firstAngle) * 135 - Math.cos(lastAngle) * 135;
   });
 
   const y = useTransform(firstSquareOffset, (offset: number) => {
     const firstAngle = ((getPathOffset(index) + offset) % 1) * Math.PI * 2;
     const lastAngle = ((getPathOffset(parentIndex) + offset) % 1) * Math.PI * 2;
-    return Math.sin(firstAngle) * 180 - Math.sin(lastAngle) * 180;
+    return Math.sin(firstAngle) * 135 - Math.sin(lastAngle) * 135;
   });
 
   return (
@@ -130,34 +130,34 @@ function Square({
 
   const x = useTransform(pathOffset, (offset: number) => {
     const angle = (offset % 1) * Math.PI * 2;
-    return Math.cos(angle) * 180;
+    return Math.cos(angle) * 135;
   });
 
   const y = useTransform(pathOffset, (offset: number) => {
     const angle = (offset % 1) * Math.PI * 2;
-    return Math.sin(angle) * 180;
+    return Math.sin(angle) * 135;
   });
 
   // Calculate explosion direction based on current position
   const explosionX = useTransform(pathOffset, (offset: number) => {
     const angle = (offset % 1) * Math.PI * 2;
-    return Math.cos(angle) * 600;
+    return Math.cos(angle) * 500;
   });
 
   const explosionY = useTransform(pathOffset, (offset: number) => {
     const angle = (offset % 1) * Math.PI * 2;
-    return Math.sin(angle) * 600;
+    return Math.sin(angle) * 500;
   });
 
   return (
     <motion.div
       key={index}
-      className={`absolute rounded-lg overflow-clip w-[150px] h-[150px] ${className}`}
+      className={`absolute rounded-xl overflow-clip ${className}`}
       style={{
-        width: 150,
-        height: 150,
-        left: "calc(50% - 75px)",
-        top: "calc(50% - 75px)",
+        width: 110,
+        height: 110,
+        left: "calc(50% - 55px)",
+        top: "calc(50% - 55px)",
         x: isTransitioning ? explosionX : x,
         y: isTransitioning ? explosionY : y,
       }}

@@ -33,7 +33,7 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
 
     // Add text on top
     ctx.fillStyle = "#8B6914";
-    ctx.font = "bold 24px Arial";
+    ctx.font = "bold 22px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText("🎄 GRATTE-MOI ! 🎄", canvas.width / 2, canvas.height / 2);
@@ -146,7 +146,7 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
 
   return (
     <motion.div
-      className="relative w-full max-w-sm mx-auto rounded-2xl overflow-hidden shadow-2xl"
+      className="relative w-80 md:w-96 mx-auto rounded-2xl overflow-hidden shadow-2xl"
       initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
       animate={{ opacity: 1, scale: 1, rotateY: 0 }}
       transition={{
@@ -163,10 +163,10 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
           animate={{ scale: isRevealed ? 1 : 0.8 }}
           transition={{ type: "spring", stiffness: 200, damping: 15 }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg">
+          <h2 className="text-xl md:text-2xl font-bold text-white mb-2 drop-shadow-lg">
             Tu as gagné !
           </h2>
-          <p className="text-xl md:text-2xl font-bold text-yellow-200 drop-shadow-lg">
+          <p className="text-lg md:text-xl font-bold text-yellow-200 drop-shadow-lg">
             Un voyage avec Arthur !
           </p>
           <motion.div
@@ -182,9 +182,9 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
       {/* Scratch canvas */}
       <canvas
         ref={canvasRef}
-        width={350}
-        height={200}
-        className={`relative z-10 w-full h-48 cursor-pointer touch-none ${isRevealed ? "pointer-events-none" : ""}`}
+        width={384}
+        height={220}
+        className={`relative z-10 w-full h-52 cursor-pointer touch-none ${isRevealed ? "pointer-events-none" : ""}`}
         onMouseDown={handleStart}
         onMouseMove={handleMove}
         onMouseUp={handleEnd}
@@ -214,7 +214,7 @@ export function CardsSection({ onNext }: CardsSectionProps) {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center w-full max-w-4xl px-4"
+      className="flex flex-col items-center justify-center w-full h-full max-w-4xl px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{

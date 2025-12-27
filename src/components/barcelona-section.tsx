@@ -47,7 +47,7 @@ export function BarcelonaSection({ dateRange }: BarcelonaSectionProps) {
       >
         {/* Main photo with elegant frame - clickable */}
         <motion.div
-          className="relative mb-4 cursor-pointer"
+          className="relative mb-6 cursor-pointer"
           initial={{ scale: 0.8, opacity: 0, y: 30 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           whileHover={{ scale: 1.05 }}
@@ -63,7 +63,7 @@ export function BarcelonaSection({ dateRange }: BarcelonaSectionProps) {
           <div className="relative">
             {/* Photo frame glow */}
             <motion.div
-              className="absolute -inset-1 bg-gradient-to-r from-yellow-200 via-white to-yellow-200 rounded-xl opacity-50 blur-sm"
+              className="absolute -inset-2 bg-gradient-to-r from-yellow-200 via-white to-yellow-200 rounded-xl opacity-50 blur-sm"
               animate={{ opacity: [0.3, 0.6, 0.3] }}
               transition={{ duration: 3, repeat: Infinity }}
             />
@@ -72,7 +72,7 @@ export function BarcelonaSection({ dateRange }: BarcelonaSectionProps) {
             <img
               src={barcelonaPic}
               alt="Barcelone"
-              className="relative w-48 h-auto md:w-64 rounded-lg shadow-2xl border-2 border-white/80 object-cover"
+              className="relative w-56 h-auto md:w-72 rounded-xl shadow-2xl border-2 border-white/80 object-cover"
             />
             
             {/* Tap to enlarge hint */}
@@ -108,7 +108,7 @@ export function BarcelonaSection({ dateRange }: BarcelonaSectionProps) {
 
         {/* Destination title */}
         <motion.h1
-          className="text-2xl md:text-4xl font-black text-white mb-2"
+          className="text-2xl md:text-3xl font-black text-white mb-4"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.6 }}
@@ -121,7 +121,7 @@ export function BarcelonaSection({ dateRange }: BarcelonaSectionProps) {
 
         {/* Dates */}
         <motion.div
-          className="bg-white/15 backdrop-blur-md rounded-xl px-5 py-2 mb-3 border border-white/20"
+          className="bg-white/15 backdrop-blur-md rounded-xl px-6 py-3 mb-5 border border-white/20"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.6 }}
@@ -134,7 +134,7 @@ export function BarcelonaSection({ dateRange }: BarcelonaSectionProps) {
 
         {/* Christmas message */}
         <motion.p
-          className="text-xl md:text-2xl font-semibold text-white mb-2"
+          className="text-xl md:text-2xl font-semibold text-white mb-4"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.8, duration: 0.6 }}
@@ -143,19 +143,9 @@ export function BarcelonaSection({ dateRange }: BarcelonaSectionProps) {
           Joyeux Noël 🎄
         </motion.p>
 
-        {/* Love message */}
-        <motion.p
-          className="text-2xl md:text-3xl font-bold text-white"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 2.2, type: "spring", stiffness: 200 }}
-        >
-          Je t'aime ❤️
-        </motion.p>
-
         {/* Signature */}
         <motion.p
-          className="mt-3 text-base text-white/70 italic"
+          className="mt-4 text-base text-white/70 italic"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.6 }}

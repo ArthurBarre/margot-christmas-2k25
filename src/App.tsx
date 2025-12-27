@@ -31,7 +31,7 @@ function App() {
 
       {/* Title */}
       <motion.p
-        className="absolute text-white text-3xl font-bold left-1/2 top-8 -translate-x-1/2 z-10 text-center"
+        className="absolute text-white text-3xl md:text-3xl font-bold left-1/2 top-8 -translate-x-1/2 z-10 text-center drop-shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ 
           opacity: currentSlide === 0 ? 1 : 0, 
