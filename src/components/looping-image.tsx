@@ -10,57 +10,78 @@ import img6 from "../assets/IMG_1881 2.jpeg";
 import img7 from "../assets/IMG_1888 2.jpeg";
 import img8 from "../assets/IMG_2007 2.jpeg";
 
-export function LoopingImages() {
+// Images for the squares
+const images = [img1, img2, img3, img4, img5, img6, img7, img8];
+
+interface LoopingImagesProps {
+  onNext: () => void;
+  isTransitioning?: boolean;
+}
+
+export function LoopingImages({ onNext, isTransitioning = false }: LoopingImagesProps) {
   const lastIndex = images.length - 1;
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
-      <div className="relative w-[500px] h-[500px]">
-        {/* Render all squares except the last one */}
-        {Array.from({ length: images.length }).map((_, index) =>
-          index === lastIndex ? null : <Square index={index} key={index} />
-        )}
+    <motion.div
+      className="relative w-[500px] h-[500px]"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{
+        opacity: 0,
+        scale: 1.5,
+        filter: "blur(20px)",
+        transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
+      }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      {/* Render all squares except the last one */}
+      {Array.from({ length: images.length }).map((_, index) =>
+        index === lastIndex ? null : (
+          <Square index={index} key={index} isTransitioning={isTransitioning} />
+        )
+      )}
 
-        {/* Render the last square with the duplicate first (index 0) square masked inside it */}
-        <Square index={lastIndex}>
-          <SquareWithOffset index={0} parentIndex={lastIndex} />
-        </Square>
+      {/* Render the last square with the duplicate first (index 0) square masked inside it */}
+      <Square index={lastIndex} isTransitioning={isTransitioning}>
+        <SquareWithOffset index={0} parentIndex={lastIndex} />
+      </Square>
 
-        {/* Center button */}
-        <motion.button
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-20 h-20 rounded-full bg-white/90 backdrop-blur-sm shadow-2xl shadow-red-900/50 flex items-center justify-center cursor-pointer border-4 border-white/50 touch-manipulation select-none"
-          style={{ WebkitTapHighlightColor: "transparent" }}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 260,
-            damping: 20,
-            delay: 1.2,
-          }}
-          whileHover={{
-            scale: 1.15,
-            boxShadow: "0 0 40px rgba(255, 255, 255, 0.5), 0 25px 50px -12px rgba(127, 29, 29, 0.6)",
-          }}
-          whileTap={{
-            scale: 0.85,
-            backgroundColor: "rgba(220, 38, 38, 0.15)",
-            boxShadow: "0 0 60px rgba(255, 255, 255, 0.7), 0 0 20px rgba(220, 38, 38, 0.5)",
-          }}
+      {/* Center button */}
+      <motion.button
+        onClick={onNext}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-20 h-20 rounded-full bg-white/90 backdrop-blur-sm shadow-2xl shadow-red-900/50 flex items-center justify-center cursor-pointer border-4 border-white/50 touch-manipulation select-none"
+        style={{ WebkitTapHighlightColor: "transparent" }}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0, opacity: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+          delay: 1.2,
+        }}
+        whileHover={{
+          scale: 1.15,
+          boxShadow: "0 0 40px rgba(255, 255, 255, 0.5), 0 25px 50px -12px rgba(127, 29, 29, 0.6)",
+        }}
+        whileTap={{
+          scale: 0.85,
+          backgroundColor: "rgba(220, 38, 38, 0.15)",
+          boxShadow: "0 0 60px rgba(255, 255, 255, 0.7), 0 0 20px rgba(220, 38, 38, 0.5)",
+        }}
+      >
+        <motion.svg
+          className="w-8 h-8 text-red-600 ml-1"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          initial={{ scale: 1 }}
+          whileTap={{ scale: 0.75, fill: "#b91c1c" }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
         >
-          <motion.svg
-            className="w-8 h-8 text-red-600 ml-1"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            initial={{ scale: 1 }}
-            whileTap={{ scale: 0.75, fill: "#b91c1c" }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <path d="M8 5v14l11-7z" />
-          </motion.svg>
-        </motion.button>
-      </div>
-    </div>
+          <path d="M8 5v14l11-7z" />
+        </motion.svg>
+      </motion.button>
+    </motion.div>
   );
 }
 
@@ -72,14 +93,9 @@ function SquareWithOffset({
   parentIndex: number;
 }) {
   const image = images[index];
-
-  // For the specific case of the first square (index 0) inside the last square (index 7),
-  // we want to position it at the same place as the original first square would be
-  // This creates the illusion of continuity in the circle
   const firstSquareOffset = useMotionValue(0);
 
   useEffect(() => {
-    // Create animation that goes from current value to 1
     const controls = animate(firstSquareOffset, 1, {
       repeat: Infinity,
       repeatType: "loop",
@@ -90,22 +106,15 @@ function SquareWithOffset({
     return () => controls.stop();
   }, [firstSquareOffset]);
 
-  // Transform the offset to x and y coordinates relative to the parent square
   const x = useTransform(firstSquareOffset, (offset: number) => {
-    // Calculate the angle for both the first square and the last square
     const firstAngle = ((getPathOffset(index) + offset) % 1) * Math.PI * 2;
     const lastAngle = ((getPathOffset(parentIndex) + offset) % 1) * Math.PI * 2;
-
-    // Calculate the x position difference
     return Math.cos(firstAngle) * 180 - Math.cos(lastAngle) * 180;
   });
 
   const y = useTransform(firstSquareOffset, (offset: number) => {
-    // Calculate the angle for both the first square and the last square
     const firstAngle = ((getPathOffset(index) + offset) % 1) * Math.PI * 2;
     const lastAngle = ((getPathOffset(parentIndex) + offset) % 1) * Math.PI * 2;
-
-    // Calculate the y position difference
     return Math.sin(firstAngle) * 180 - Math.sin(lastAngle) * 180;
   });
 
@@ -128,17 +137,17 @@ function Square({
   index,
   children,
   className,
+  isTransitioning,
 }: {
   index: number;
   children?: React.ReactNode;
   className?: string;
+  isTransitioning?: boolean;
 }) {
   const image = images[index];
   const pathOffset = useMotionValue(getPathOffset(index));
 
-  // Animate the path offset
   useEffect(() => {
-    // Create animation that goes from current value to current value + 1
     const controls = animate(pathOffset, pathOffset.get() + 1, {
       repeat: Infinity,
       repeatType: "loop",
@@ -149,7 +158,6 @@ function Square({
     return () => controls.stop();
   }, [pathOffset]);
 
-  // Transform the offset to x and y coordinates
   const x = useTransform(pathOffset, (offset: number) => {
     const angle = (offset % 1) * Math.PI * 2;
     return Math.cos(angle) * 180;
@@ -158,6 +166,17 @@ function Square({
   const y = useTransform(pathOffset, (offset: number) => {
     const angle = (offset % 1) * Math.PI * 2;
     return Math.sin(angle) * 180;
+  });
+
+  // Calculate explosion direction based on current position
+  const explosionX = useTransform(pathOffset, (offset: number) => {
+    const angle = (offset % 1) * Math.PI * 2;
+    return Math.cos(angle) * 600;
+  });
+
+  const explosionY = useTransform(pathOffset, (offset: number) => {
+    const angle = (offset % 1) * Math.PI * 2;
+    return Math.sin(angle) * 600;
   });
 
   return (
@@ -169,26 +188,31 @@ function Square({
         height: 150,
         left: "calc(50% - 75px)",
         top: "calc(50% - 75px)",
-        x,
-        y,
+        x: isTransitioning ? explosionX : x,
+        y: isTransitioning ? explosionY : y,
       }}
       initial={{
         opacity: 0,
         scale: 0.9,
       }}
       animate={{
-        opacity: 1,
-        scale: 1,
+        opacity: isTransitioning ? 0 : 1,
+        scale: isTransitioning ? 0.5 : 1,
+        rotate: isTransitioning ? index * 45 : 0,
       }}
       transition={{
         opacity: {
-          duration: 1,
-          delay: index * 0.12 + 0.35,
+          duration: isTransitioning ? 0.4 : 1,
+          delay: isTransitioning ? 0 : index * 0.12 + 0.35,
           ease: "easeOut",
         },
         scale: {
-          duration: 1,
-          delay: index * 0.12 + 0.35,
+          duration: isTransitioning ? 0.4 : 1,
+          delay: isTransitioning ? 0 : index * 0.12 + 0.35,
+          ease: "easeOut",
+        },
+        rotate: {
+          duration: 0.5,
           ease: "easeOut",
         },
       }}
@@ -223,6 +247,3 @@ function Square({
 function getPathOffset(index: number) {
   return index / 8;
 }
-
-// Images for the squares
-const images = [img1, img2, img3, img4, img5, img6, img7, img8];
