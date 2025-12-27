@@ -170,7 +170,7 @@ function BolideScratchCard() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              Notre bolide ! 🚗💨
+              La Cocci-Dub ! 🚗💨
             </motion.p>
           </motion.div>
         )}
@@ -231,7 +231,7 @@ export function BolideSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          🚀 Découvre notre bolide ! 🚀
+          Découvre notre bolide !
         </motion.h2>
 
         <BolideScratchCard />

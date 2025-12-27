@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import './App.css'
 import { LoopingImages } from './components/looping-image'
-import { CardsSection } from './components/cards-section'
+import { CardsSection } from './components/trip-section'
 import { BolideSection } from './components/bolide-section'
+import { DateRangeSection } from './components/date-range'
 
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -48,13 +49,21 @@ function App() {
               isTransitioning={isTransitioning}
             />
           )}
-          {currentSlide === 1 && (
+          {
+            currentSlide === 1 && (
+              <DateRangeSection
+                key="date-range"
+                onNext={goToNextSlide}
+              />
+            )
+          }
+          {currentSlide === 2 && (
             <CardsSection
               key="cards"
               onNext={goToNextSlide}
             />
           )}
-          {currentSlide === 2 && (
+          {currentSlide === 3 && (
             <BolideSection
               key="bolide"
             />

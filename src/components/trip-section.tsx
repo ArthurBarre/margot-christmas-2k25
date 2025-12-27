@@ -163,7 +163,6 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
           animate={{ scale: isRevealed ? 1 : 0.8 }}
           transition={{ type: "spring", stiffness: 200, damping: 15 }}
         >
-          <span className="text-6xl mb-4 block">🎉✈️🌴</span>
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg">
             Tu as gagné !
           </h2>
@@ -225,7 +224,6 @@ export function CardsSection({ onNext }: CardsSectionProps) {
         transition: { duration: 0.5 },
       }}
     >
-      {/* Scratch Card Section */}
       <motion.div
         className="flex flex-col items-center"
         initial={{ opacity: 0, y: 50 }}
@@ -234,15 +232,15 @@ export function CardsSection({ onNext }: CardsSectionProps) {
       >
         <ScratchCard onRevealed={() => setIsRevealed(true)} />
         
-        {/* Play button appears after reveal */}
+        {/* Play button appears after scratch card is revealed */}
         {isRevealed && (
           <motion.div
             className="mt-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.3 }}
           >
-            <PlayButton onClick={onNext} delay={0.3} />
+            <PlayButton onClick={onNext} delay={0.2} />
           </motion.div>
         )}
       </motion.div>
