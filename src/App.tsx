@@ -27,7 +27,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-red-700 via-red-600 to-rose-500 relative overflow-hidden">
+    <div className="h-screen w-screen bg-gradient-to-br from-red-700 via-red-600 to-rose-500 relative overflow-hidden fixed inset-0">
       {/* Subtle overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-red-700 via-red-600 to-rose-500" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(255,255,255,0.15)_0%,_transparent_50%)]" />
@@ -37,14 +37,17 @@ function App() {
       <motion.p
         className="absolute text-white text-3xl font-bold left-1/2 top-8 -translate-x-1/2 z-10 text-center"
         initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.8 }}
+        animate={{ 
+          opacity: currentSlide === 0 ? 1 : 0, 
+          y: currentSlide === 0 ? 0 : -50 
+        }}
+        transition={{ duration: 0.5 }}
       >
         Joyeux Noël Margot !
       </motion.p>
 
       {/* Content - Carousel */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-4 overflow-hidden">
+      <div className="relative z-10 flex items-center justify-center h-full p-4 overflow-hidden">
         <AnimatePresence mode="wait">
           {currentSlide === 0 && (
             <LoopingImages

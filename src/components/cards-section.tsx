@@ -211,7 +211,7 @@ function ScratchCard() {
 export function CardsSection({ onBack }: CardsSectionProps) {
   return (
     <motion.div
-      className="flex flex-col items-center gap-8 w-full max-w-4xl px-4"
+      className="flex flex-col items-center justify-center w-full max-w-4xl px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{
@@ -221,25 +221,8 @@ export function CardsSection({ onBack }: CardsSectionProps) {
         transition: { duration: 0.5 },
       }}
     >
-      {/* Back button */}
-      <motion.button
-        onClick={onBack}
-        className="self-start flex items-center gap-2 text-white/80 hover:text-white transition-colors touch-manipulation"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.3 }}
-        whileHover={{ x: -5 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-        <span className="font-medium">Retour</span>
-      </motion.button>
-
       {/* Scratch Card Section */}
       <motion.div
-        className="w-full"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
