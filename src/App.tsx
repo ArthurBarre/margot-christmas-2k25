@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import './App.css'
 import { LoopingImages } from './components/looping-image'
 import { CardsSection } from './components/cards-section'
+import { BolideSection } from './components/bolide-section'
 
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -13,15 +14,6 @@ function App() {
     setIsTransitioning(true)
     setTimeout(() => {
       setCurrentSlide((prev) => prev + 1)
-      setIsTransitioning(false)
-    }, 600)
-  }
-
-  const goToPrevSlide = () => {
-    if (isTransitioning) return
-    setIsTransitioning(true)
-    setTimeout(() => {
-      setCurrentSlide((prev) => prev - 1)
       setIsTransitioning(false)
     }, 600)
   }
@@ -59,7 +51,12 @@ function App() {
           {currentSlide === 1 && (
             <CardsSection
               key="cards"
-              onBack={goToPrevSlide}
+              onNext={goToNextSlide}
+            />
+          )}
+          {currentSlide === 2 && (
+            <BolideSection
+              key="bolide"
             />
           )}
         </AnimatePresence>

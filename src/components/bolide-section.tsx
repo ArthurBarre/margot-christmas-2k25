@@ -1,13 +1,10 @@
 import { motion } from "motion/react";
 import { useRef, useEffect, useState, useCallback } from "react";
-import { PlayButton } from "./play-button";
 
-interface CardsSectionProps {
-  onNext: () => void;
-}
+import bolidImg from "../assets/B0D8812B-86B3-424B-B29E-662F75C0A27B 2.jpg";
 
-// Custom Scratch Card Component
-function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
+// Scratch Card for Bolide
+function BolideScratchCard() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isScratching, setIsScratching] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -20,29 +17,29 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Create golden scratch overlay
+    // Create silver/blue scratch overlay
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, "#D4AF37");
-    gradient.addColorStop(0.3, "#F5E6A3");
-    gradient.addColorStop(0.5, "#D4AF37");
-    gradient.addColorStop(0.7, "#F5E6A3");
-    gradient.addColorStop(1, "#D4AF37");
+    gradient.addColorStop(0, "#4A90D9");
+    gradient.addColorStop(0.3, "#87CEEB");
+    gradient.addColorStop(0.5, "#4A90D9");
+    gradient.addColorStop(0.7, "#87CEEB");
+    gradient.addColorStop(1, "#4A90D9");
 
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Add text on top
-    ctx.fillStyle = "#8B6914";
-    ctx.font = "bold 24px Arial";
+    ctx.fillStyle = "#1E3A5F";
+    ctx.font = "bold 20px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("🎄 GRATTE-MOI ! 🎄", canvas.width / 2, canvas.height / 2);
+    ctx.fillText("🚗 GRATTE POUR DÉCOUVRIR ! 🚗", canvas.width / 2, canvas.height / 2);
 
     // Add some sparkle effects
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 30; i++) {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height;
-      ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+      ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
       ctx.beginPath();
       ctx.arc(x, y, 2, 0, Math.PI * 2);
       ctx.fill();
@@ -82,27 +79,23 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
 
     ctx.globalCompositeOperation = "destination-out";
     
-    // Create a circular brush
-    const gradient = ctx.createRadialGradient(x, y, 0, x, y, 30);
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, 35);
     gradient.addColorStop(0, "rgba(0, 0, 0, 1)");
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
     
     ctx.fillStyle = gradient;
     ctx.beginPath();
-    ctx.arc(x, y, 30, 0, Math.PI * 2);
+    ctx.arc(x, y, 35, 0, Math.PI * 2);
     ctx.fill();
 
-    // Calculate scratch percentage
     const percent = calculateScratchPercent();
     setScratchPercent(percent);
 
     if (percent > 50 && !isRevealed) {
       setIsRevealed(true);
-      onRevealed();
-      // Clear the canvas completely
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
-  }, [calculateScratchPercent, isRevealed, onRevealed]);
+  }, [calculateScratchPercent, isRevealed]);
 
   const getPosition = (e: React.MouseEvent | React.TouchEvent) => {
     const canvas = canvasRef.current;
@@ -146,7 +139,7 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
 
   return (
     <motion.div
-      className="relative w-full max-w-sm mx-auto rounded-2xl overflow-hidden shadow-2xl"
+      className="relative w-full max-w-md mx-auto rounded-2xl overflow-hidden shadow-2xl"
       initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
       animate={{ opacity: 1, scale: 1, rotateY: 0 }}
       transition={{
@@ -156,36 +149,39 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
         delay: 0.4,
       }}
     >
-      {/* Reveal content behind */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 flex flex-col items-center justify-center p-6 text-center">
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: isRevealed ? 1 : 0.8 }}
-          transition={{ type: "spring", stiffness: 200, damping: 15 }}
-        >
-          <span className="text-6xl mb-4 block">🎉✈️🌴</span>
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg">
-            Tu as gagné !
-          </h2>
-          <p className="text-xl md:text-2xl font-bold text-yellow-200 drop-shadow-lg">
-            Un voyage avec Arthur !
-          </p>
+      {/* Car image behind */}
+      <div className="absolute inset-0">
+        <img
+          src={bolidImg}
+          alt="Notre bolide"
+          className="w-full h-full object-cover"
+        />
+        {/* Overlay with text when revealed */}
+        {isRevealed && (
           <motion.div
-            className="mt-4 text-4xl"
-            animate={{ rotate: [0, 10, -10, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 2, repeatDelay: 1 }}
+            className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col items-center justify-end p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
           >
-            ❤️
+            <motion.p
+              className="text-2xl font-bold text-white drop-shadow-lg text-center"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              Notre bolide ! 🚗💨
+            </motion.p>
           </motion.div>
-        </motion.div>
+        )}
       </div>
 
       {/* Scratch canvas */}
       <canvas
         ref={canvasRef}
-        width={350}
-        height={200}
-        className={`relative z-10 w-full h-48 cursor-pointer touch-none ${isRevealed ? "pointer-events-none" : ""}`}
+        width={400}
+        height={300}
+        className={`relative z-10 w-full h-64 cursor-pointer touch-none ${isRevealed ? "pointer-events-none" : ""}`}
         onMouseDown={handleStart}
         onMouseMove={handleMove}
         onMouseUp={handleEnd}
@@ -210,9 +206,7 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
   );
 }
 
-export function CardsSection({ onNext }: CardsSectionProps) {
-  const [isRevealed, setIsRevealed] = useState(false);
-
+export function BolideSection() {
   return (
     <motion.div
       className="flex flex-col items-center justify-center w-full max-w-4xl px-4"
@@ -225,26 +219,22 @@ export function CardsSection({ onNext }: CardsSectionProps) {
         transition: { duration: 0.5 },
       }}
     >
-      {/* Scratch Card Section */}
       <motion.div
         className="flex flex-col items-center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
+        transition={{ delay: 0.3 }}
       >
-        <ScratchCard onRevealed={() => setIsRevealed(true)} />
-        
-        {/* Play button appears after reveal */}
-        {isRevealed && (
-          <motion.div
-            className="mt-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <PlayButton onClick={onNext} delay={0.3} />
-          </motion.div>
-        )}
+        <motion.h2
+          className="text-2xl md:text-3xl font-bold text-white mb-6 drop-shadow-lg text-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          🚀 Découvre notre bolide ! 🚀
+        </motion.h2>
+
+        <BolideScratchCard />
       </motion.div>
     </motion.div>
   );
