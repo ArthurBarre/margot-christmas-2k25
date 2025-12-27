@@ -5,10 +5,13 @@ import { LoopingImages } from './components/looping-image'
 import { CardsSection } from './components/trip-section'
 import { BolideSection } from './components/bolide-section'
 import { DateRangeSection } from './components/date-range'
+import { BarcelonaSection } from './components/barcelona-section'
+import type { DateRange } from 'react-day-picker'
 
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [dateRange, setDateRange] = useState<DateRange | undefined>()
 
   const goToNextSlide = () => {
     if (isTransitioning) return
@@ -49,14 +52,14 @@ function App() {
               isTransitioning={isTransitioning}
             />
           )}
-          {
-            currentSlide === 1 && (
-              <DateRangeSection
-                key="date-range"
-                onNext={goToNextSlide}
-              />
-            )
-          }
+          {currentSlide === 1 && (
+            <DateRangeSection
+              key="date-range"
+              onNext={goToNextSlide}
+              dateRange={dateRange}
+              onDateRangeChange={setDateRange}
+            />
+          )}
           {currentSlide === 2 && (
             <CardsSection
               key="cards"
@@ -66,6 +69,13 @@ function App() {
           {currentSlide === 3 && (
             <BolideSection
               key="bolide"
+              onNext={goToNextSlide}
+            />
+          )}
+          {currentSlide === 4 && (
+            <BarcelonaSection
+              key="barcelona"
+              dateRange={dateRange}
             />
           )}
         </AnimatePresence>

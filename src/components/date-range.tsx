@@ -1,18 +1,15 @@
 import { motion } from "motion/react";
-import { useState } from "react";
 import { Calendar } from "./ui/calendar";
 import { PlayButton } from "./play-button";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import type { DateRange } from "react-day-picker";
 
-interface CardsSectionProps {
+interface DateRangeSectionProps {
   onNext: () => void;
+  dateRange?: DateRange;
+  onDateRangeChange: (range: DateRange | undefined) => void;
 }
 
-export function DateRangeSection({ onNext }: CardsSectionProps) {
-  const [dateRange, setDateRange] = useState<DateRange | undefined>();
-
+export function DateRangeSection({ onNext, dateRange, onDateRangeChange }: DateRangeSectionProps) {
   const hasSelectedRange = dateRange?.from && dateRange?.to;
 
   return (
@@ -52,7 +49,7 @@ export function DateRangeSection({ onNext }: CardsSectionProps) {
           <Calendar
             mode="range"
             selected={dateRange}
-            onSelect={setDateRange}
+            onSelect={onDateRangeChange}
             numberOfMonths={1}
             disabled={{ before: new Date() }}
           />

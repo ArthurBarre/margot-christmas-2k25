@@ -1,10 +1,15 @@
 import { motion } from "motion/react";
 import { useRef, useEffect, useState, useCallback } from "react";
+import { PlayButton } from "./play-button";
 
 import bolidImg from "../assets/B0D8812B-86B3-424B-B29E-662F75C0A27B 2.jpg";
 
+interface BolideSectionProps {
+  onNext: () => void;
+}
+
 // Scratch Card for Bolide
-function BolideScratchCard() {
+function BolideScratchCard({ onRevealed }: { onRevealed: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isScratching, setIsScratching] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -93,9 +98,10 @@ function BolideScratchCard() {
 
     if (percent > 50 && !isRevealed) {
       setIsRevealed(true);
+      onRevealed();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
-  }, [calculateScratchPercent, isRevealed]);
+  }, [calculateScratchPercent, isRevealed, onRevealed]);
 
   const getPosition = (e: React.MouseEvent | React.TouchEvent) => {
     const canvas = canvasRef.current;
@@ -206,7 +212,9 @@ function BolideScratchCard() {
   );
 }
 
-export function BolideSection() {
+export function BolideSection({ onNext }: BolideSectionProps) {
+  const [isRevealed, setIsRevealed] = useState(false);
+
   return (
     <motion.div
       className="flex flex-col items-center justify-center w-full max-w-4xl px-4"
@@ -234,7 +242,19 @@ export function BolideSection() {
           Découvre notre bolide !
         </motion.h2>
 
-        <BolideScratchCard />
+        <BolideScratchCard onRevealed={() => setIsRevealed(true)} />
+
+        {/* Play button appears after scratch card is revealed */}
+        {isRevealed && (
+          <motion.div
+            className="mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <PlayButton onClick={onNext} delay={0.2} />
+          </motion.div>
+        )}
       </motion.div>
     </motion.div>
   );
