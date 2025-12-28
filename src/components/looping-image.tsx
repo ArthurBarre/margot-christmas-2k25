@@ -119,38 +119,9 @@ function Lightbox({ image, onClose }: { image: string; onClose: () => void }) {
         exit={{ opacity: 0 }}
       />
 
-      {/* Close button */}
-      <motion.button
-        className="absolute top-6 right-6 z-10 text-white/70 hover:text-white transition-colors"
-        onClick={onClose}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        transition={{ delay: 0.1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="32"
-          height="32"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      </motion.button>
-
-      {/* Image */}
-      <motion.img
-        src={image}
-        alt="Photo agrandie"
-        className="relative z-10 max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+      {/* Image container */}
+      <motion.div
+        className="relative z-10"
         initial={{ opacity: 0, scale: 0.8, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: -10 }}
@@ -159,9 +130,43 @@ function Lightbox({ image, onClose }: { image: string; onClose: () => void }) {
           stiffness: 300, 
           damping: 25 
         }}
-        onClick={(e) => e.stopPropagation()}
-        draggable={false}
-      />
+      >
+        {/* Close button */}
+        <motion.button
+          className="absolute -top-3 -right-3 z-20 bg-black/60 rounded-full p-1.5 text-white/80 hover:text-white hover:bg-black/80 transition-colors"
+          onClick={onClose}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ delay: 0.15 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </motion.button>
+
+        {/* Image */}
+        <img
+          src={image}
+          alt="Photo agrandie"
+          className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+          draggable={false}
+        />
+      </motion.div>
     </motion.div>
   );
 }
