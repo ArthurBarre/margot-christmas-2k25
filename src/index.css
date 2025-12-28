@@ -121,6 +121,7 @@
     @apply h-screen w-screen overflow-hidden;
     position: fixed;
     inset: 0;
+    font-family: 'Cormorant Garamond', Georgia, serif;
   }
   body {
     @apply bg-background text-foreground;

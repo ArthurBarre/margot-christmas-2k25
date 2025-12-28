@@ -167,7 +167,7 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
             Tu as gagné !
           </h2>
           <p className="text-lg md:text-xl font-bold text-yellow-200 drop-shadow-lg">
-            Un voyage avec Arthur !
+            Un séjour avec Arthur !
           </p>
           <motion.div
             className="mt-4 text-4xl"
@@ -202,7 +202,7 @@ function ScratchCard({ onRevealed }: { onRevealed: () => void }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          {Math.round(scratchPercent)}% gratté
+          {Math.round(scratchPercent*2)}% gratté
         </motion.div>
       )}
     </motion.div>

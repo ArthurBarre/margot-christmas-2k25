@@ -24,9 +24,9 @@ export function LoopingImages({ onNext, isTransitioning = false }: LoopingImages
 
   return (
     <motion.div
-      className="relative w-[380px] h-[380px] md:w-[500px] md:h-[500px]"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
+      className="flex flex-col items-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       exit={{
         opacity: 0,
         scale: 1.5,
@@ -35,6 +35,22 @@ export function LoopingImages({ onNext, isTransitioning = false }: LoopingImages
       }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
+      {/* Title */}
+      <motion.h2
+        className="text-white text-3xl md:text-4xl font-semibold mb-6 drop-shadow-lg"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        Les participants :
+      </motion.h2>
+
+      <motion.div
+        className="relative w-[380px] h-[380px] md:w-[500px] md:h-[500px]"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
       {/* Render all squares except the last one */}
       {Array.from({ length: images.length }).map((_, index) =>
         index === lastIndex ? null : (
@@ -51,6 +67,7 @@ export function LoopingImages({ onNext, isTransitioning = false }: LoopingImages
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
         <PlayButton onClick={onNext} delay={1.2} />
       </div>
+      </motion.div>
     </motion.div>
   );
 }
