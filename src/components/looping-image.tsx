@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { motion, useMotionValue, useTransform, animate } from "motion/react";
+import { useEffect, useState } from "react";
+import { motion, useMotionValue, useTransform, animate, AnimatePresence } from "motion/react";
 import { PlayButton } from "./play-button";
 
 import img1 from "../assets/IMG_1597 2.jpg";
@@ -21,6 +21,16 @@ interface LoopingImagesProps {
 
 export function LoopingImages({ onNext, isTransitioning = false }: LoopingImagesProps) {
   const lastIndex = images.length - 1;
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+
+  // Close lightbox on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImage(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <motion.div
@@ -54,12 +64,21 @@ export function LoopingImages({ onNext, isTransitioning = false }: LoopingImages
       {/* Render all squares except the last one */}
       {Array.from({ length: images.length }).map((_, index) =>
         index === lastIndex ? null : (
-          <Square index={index} key={index} isTransitioning={isTransitioning} />
+          <Square 
+            index={index} 
+            key={index} 
+            isTransitioning={isTransitioning}
+            onImageClick={() => setSelectedImage(index)}
+          />
         )
       )}
 
       {/* Render the last square with the duplicate first (index 0) square masked inside it */}
-      <Square index={lastIndex} isTransitioning={isTransitioning}>
+      <Square 
+        index={lastIndex} 
+        isTransitioning={isTransitioning}
+        onImageClick={() => setSelectedImage(lastIndex)}
+      >
         <SquareWithOffset index={0} parentIndex={lastIndex} />
       </Square>
 
@@ -68,6 +87,81 @@ export function LoopingImages({ onNext, isTransitioning = false }: LoopingImages
         <PlayButton onClick={onNext} delay={1.2} />
       </div>
       </motion.div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage !== null && (
+          <Lightbox 
+            image={images[selectedImage]} 
+            onClose={() => setSelectedImage(null)} 
+          />
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+function Lightbox({ image, onClose }: { image: string; onClose: () => void }) {
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Backdrop */}
+      <motion.div
+        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+        onClick={onClose}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+
+      {/* Close button */}
+      <motion.button
+        className="absolute top-6 right-6 z-10 text-white/70 hover:text-white transition-colors"
+        onClick={onClose}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        transition={{ delay: 0.1 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </motion.button>
+
+      {/* Image */}
+      <motion.img
+        src={image}
+        alt="Photo agrandie"
+        className="relative z-10 max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+        initial={{ opacity: 0, scale: 0.8, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: -10 }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 300, 
+          damping: 25 
+        }}
+        onClick={(e) => e.stopPropagation()}
+        draggable={false}
+      />
     </motion.div>
   );
 }
@@ -125,11 +219,13 @@ function Square({
   children,
   className,
   isTransitioning,
+  onImageClick,
 }: {
   index: number;
   children?: React.ReactNode;
   className?: string;
   isTransitioning?: boolean;
+  onImageClick?: () => void;
 }) {
   const image = images[index];
   const pathOffset = useMotionValue(getPathOffset(index));
@@ -169,7 +265,7 @@ function Square({
   return (
     <motion.div
       key={index}
-      className={`absolute rounded-xl overflow-clip ${className}`}
+      className={`absolute rounded-xl overflow-clip cursor-pointer ${className}`}
       style={{
         width: 110,
         height: 110,
@@ -203,6 +299,9 @@ function Square({
           ease: "easeOut",
         },
       }}
+      onClick={onImageClick}
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.95 }}
     >
       <img
         src={image}
