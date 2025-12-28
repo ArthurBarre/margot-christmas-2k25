@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
 import './App.css'
 import { WelcomeScreen } from './components/welcome-screen'
 import { LoopingImages } from './components/looping-image'
